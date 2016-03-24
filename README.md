@@ -1,2 +1,2 @@
 # Billy
-Experimenting with Tone.js and NW
+Experimenting with Tone.js and Electron
