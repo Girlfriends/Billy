@@ -2,22 +2,46 @@
 /* jshint browser:true */
 // 'use strict';
 
-console.log("File loaded");
-var $ = require("jquery");
-var Tone = require("Tone");
-var synth = new Tone.SimpleSynth().toMaster();
+import UIDStore from "./uid_store";
+import Tone from "tone";
 
-function playArpeggio() {
-  console.log("Arpeggio time");
-  synth.triggerAttackRelease("A2", "8n",  "+4n * 0");
-  synth.triggerAttackRelease("C#3", "8n", "+4n * 1");
-  synth.triggerAttackRelease("E3", "8n",  "+4n * 2");
-  synth.triggerAttackRelease("A3", "8n",  "+4n * 3");
-  synth.triggerAttackRelease("C#4", "8n", "+4n * 4");
-  synth.triggerAttackRelease("E4", "8n",  "+4n * 5");
-  synth.triggerAttackRelease("A4", "8n",  "+4n * 6");
+class ToneTree {
+  constructor() {
+    this.nodeUIDStore = new UIDStore();
+    this.nodeMap = {};
+  }
+  addOscillator(type, frequency) {
+    let uid = this.nodeUIDStore.getUID();
+    let omniOsc = new Tone.OmniOscillator(frequency, type).toMaster();
+    omniOsc.start();
+    this.nodeMap[uid] = omniOsc;
+    return uid;
+  }
+  removeOscillator(uid) {
+    if (this.nodeMap.hasOwnProperty(uid)) {
+      let omniOsc = this.nodeMap[uid];
+      omniOsc.stop();
+      this.nodeUIDStore.returnUID(uid);
+      delete this.nodeMap[uid];
+      return 1;
+    }
+    return 0;
+  }
+}
+
+let $ = require("jquery");
+let tt = new ToneTree();
+
+function addRandomOscillator() {
+  let rfreq = Math.random() * 440.0 + 20.0;
+  let newUID = tt.addOscillator("pwm", rfreq);
+  $('div.oscillators').append('<button type="button" id=' + newUID + '>' + newUID + ':' + rfreq + '</button>');
+  $('button#' + newUID).click(() => {
+    $('button#' + newUID).remove();
+    tt.removeOscillator(newUID);
+  });
 }
 
 $(document).ready(function() {
-  $("button[name=arpeggio]").click(playArpeggio);
+  $("button[name=add]").click(addRandomOscillator);
 });
