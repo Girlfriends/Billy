@@ -28,20 +28,3 @@ class ToneTree {
     return 0;
   }
 }
-
-let $ = require("jquery");
-let tt = new ToneTree();
-
-function addRandomOscillator() {
-  let rfreq = Math.random() * 440.0 + 20.0;
-  let newUID = tt.addOscillator("pwm", rfreq);
-  $('div.oscillators').append('<button type="button" id=' + newUID + '>' + newUID + ':' + rfreq + '</button>');
-  $('button#' + newUID).click(() => {
-    $('button#' + newUID).remove();
-    tt.removeOscillator(newUID);
-  });
-}
-
-$(document).ready(function() {
-  $("button[name=add]").click(addRandomOscillator);
-});
