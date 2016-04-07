@@ -27,7 +27,9 @@
     "babel-register": "^6.7.2",
     "chai": "^3.5.0",
     "chai-immutable": "^1.5.3",
+    "contextify": "^0.1.15",
     "electron-prebuilt": "^0.37.2",
+    "jsdom": "^8.3.0",
     "mocha": "^2.4.5",
     "redux-devtools": "^3.1.1"
   },

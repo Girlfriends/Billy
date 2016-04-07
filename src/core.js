@@ -17,7 +17,7 @@ export function createNode(state, node) {
     uid = uids.last();
     state = state.setIn(['object_graph', 'free_uids'], uids.pop());
   }
-  let newNode = fromJS({ 'uid': uid });
+  let newNode = fromJS({ 'uid': uid }).merge(node);
   return state.updateIn(['object_graph', 'objects'],
     Map(),
     objects => objects.set(uid, newNode));
