@@ -1,3 +1,6 @@
 [submodule "pixi.js"]
 	path = pixi.js
 	url = git@github.com:pixijs/pixi.js.git
+[submodule "pixi-input"]
+	path = pixi-input
+	url = git@github.com:SebastianNette/PIXI.Input.git
